@@ -1,6 +1,5 @@
 {
   "name": "digitalpin",
-  "version": "0.0.1",
   "description": "Library for Geospatial Addressing Solution by India Post",
   "main": "dist/cjs/index.js",
   "module": "./dist/esm/index.js",
