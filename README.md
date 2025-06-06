@@ -1,3 +1,5 @@
+[![semantic-release: angular](https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release&style=flat-square)](https://github.com/semantic-release/semantic-release) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier) [![lang: typescript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF&style=flat-square)](https://www.typescriptlang.org/) [![NPM Version](https://img.shields.io/npm/v/digitalpin?style=flat-square)](https://www.npmjs.com/package/digitalpin) [![NPM Downloads](https://img.shields.io/npm/dw/digitalpin?style=flat-square)](https://www.npmjs.com/package/digitalpin) [![CI](https://github.com/amitkma/digipin/actions/workflows/ci.yml/badge.svg)](https://github.com/amitkma/digipin/actions/workflows/ci.yml)
+
 # DigiPin
 
 A JavaScript/TypeScript library for India Post's Geospatial Addressing Solution. This library provides methods to encode and decode DigiPins - a 10-character alphanumeric code that represents a unique geographical location in India.
