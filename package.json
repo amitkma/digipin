@@ -1,0 +1,68 @@
+{
+  "name": "digipin",
+  "version": "0.0.1",
+  "description": "Library for Geospatial Addressing Solution by India Post",
+  "main": "dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
+    "build": "npm run build:esm && npm run build:cjs && npm run build:types",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format:check": "prettier --check \"./**/*.+(js|jsx|ts|tsx|json|yml|yaml|md|html)\"",
+    "format": "prettier --write \"./**/*.+(js|jsx|ts|tsx|json|yml|yaml|md|html)\"",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amitkma/digipin/"
+  },
+  "keywords": [
+    "geospatial",
+    "latitude",
+    "longitude",
+    "india",
+    "postal",
+    "address",
+    "digipin"
+  ],
+  "author": "Amit Kumar",
+  "license": "ISC",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.33.1",
+    "@typescript-eslint/parser": "^8.33.1",
+    "eslint": "^9.28.0",
+    "eslint-config-prettier": "^10.1.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@eslint/migrate-config": "^1.5.0"
+  },
+  "lint-staged": {
+    "*.+(js|jsx|ts|tsx)": [
+      "npm run lint:fix",
+      "npm run format"
+    ],
+    "*.+(json|yml|yaml|md|html)": [
+      "npm run format"
+    ]
+  }
+}
