@@ -7,7 +7,7 @@ A JavaScript/TypeScript library for India Post's Geospatial Addressing Solution.
 ## Installation
 
 ```bash
-npm install digipin
+npm install digitalpin
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install digipin
 ### JavaScript
 
 ```javascript
-const { getDigiPin, getLatLngFromDigiPin } = require('digipin');
+const { getDigiPin, getLatLngFromDigiPin } = require('digitalpin');
 
 // Convert latitude and longitude to DigiPin
 const digiPin = getDigiPin(28.6139, 77.209); // Delhi coordinates
@@ -29,14 +29,14 @@ console.log(coordinates); // { latitude: "28.613900", longitude: "77.209000" }
 ### TypeScript
 
 ```typescript
-import { getDigiPin, getLatLngFromDigiPin } from 'digipin';
+import { getDigiPin, getLatLngFromDigiPin } from 'digitalpin';
 
 // Convert latitude and longitude to DigiPin
 const digiPin = getDigiPin(28.6139, 77.209); // Delhi coordinates
-console.log(digiPin); // Returns formatted DigiPin like "ABC-DEF-GHIJ"
+console.log(digiPin); // Returns formatted DigiPin like "39J-438-TJC7"
 
 // Convert DigiPin back to coordinates
-const coordinates = getLatLngFromDigiPin('ABC-DEF-GHIJ');
+const coordinates = getLatLngFromDigiPin('39J-438-TJC7');
 console.log(coordinates); // { latitude: "28.613900", longitude: "77.209000" }
 ```
 
@@ -49,7 +49,7 @@ Converts latitude and longitude coordinates to a DigiPin.
 - **Parameters:**
   - `lat` (number): Latitude value between 2.5 and 38.5
   - `lon` (number): Longitude value between 63.5 and 99.5
-- **Returns:** A formatted DigiPin string (e.g., "ABC-DEF-GHIJ")
+- **Returns:** A formatted DigiPin string (e.g., "39J-438-TJC7")
 - **Throws:** Error if latitude or longitude is out of range
 
 ### getLatLngFromDigiPin(digiPin: string): { latitude: string, longitude: string }
