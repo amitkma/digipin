@@ -31,7 +31,9 @@
     "prepare": "husky",
     "types": "tsc --noEmit",
     "validate-cjs": "node scripts/validate-cjs-bundle.cjs",
-    "coverage": "nyc npm test"
+    "coverage": "nyc npm test",
+    "prepack": "npm run build",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
