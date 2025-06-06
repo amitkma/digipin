@@ -1,5 +1,5 @@
 {
-  "name": "digipin",
+  "name": "digitalpin",
   "version": "0.0.1",
   "description": "Library for Geospatial Addressing Solution by India Post",
   "main": "dist/cjs/index.js",
@@ -21,12 +21,17 @@
     "build:cjs": "tsc -p tsconfig.cjs.json",
     "build:types": "tsc --emitDeclarationOnly --declaration --outDir dist/types",
     "build": "npm run build:esm && npm run build:cjs && npm run build:types",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_NO_WARNINGS=1 node --import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"ts-node/esm\", pathToFileURL(\"./\"));' node_modules/.bin/mocha",
+    "test:watch": "mocha --watch",
+    "test:coverage": "nyc mocha",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "format:check": "prettier --check \"./**/*.+(js|jsx|ts|tsx|json|yml|yaml|md|html)\"",
     "format": "prettier --write \"./**/*.+(js|jsx|ts|tsx|json|yml|yaml|md|html)\"",
-    "prepare": "husky"
+    "prepare": "husky",
+    "types": "tsc --noEmit",
+    "validate-cjs": "node scripts/validate-cjs-bundle.cjs",
+    "coverage": "nyc npm test"
   },
   "repository": {
     "type": "git",
@@ -44,17 +49,29 @@
   "author": "Amit Kumar",
   "license": "ISC",
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
+    "chai": "^5.1.0",
+    "concurrently": "^8.2.2",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.0",
+    "mocha": "^10.3.0",
+    "nyc": "^17.1.0",
     "prettier": "^3.2.5",
+    "semantic-release": "^24.2.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.0.0"
-  },
-  "dependencies": {
-    "@eslint/migrate-config": "^1.5.0"
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [

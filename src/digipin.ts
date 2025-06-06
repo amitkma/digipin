@@ -17,10 +17,10 @@ const DIGIPIN_GRID: string[][] = [
 ];
 
 const BOUNDS = {
-  minLat: 2.5,
   maxLat: 38.5,
-  minLon: 63.5,
   maxLon: 99.5,
+  minLat: 2.5,
+  minLon: 63.5,
 };
 
 /**
