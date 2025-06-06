@@ -55,14 +55,52 @@ describe('DigiPin', () => {
     });
 
     it('should throw error for invalid DigiPin length', () => {
-      expect(() => getLatLngFromDigiPin('ABC')).to.throw('Invalid DIGIPIN');
       expect(() => getLatLngFromDigiPin('ABCDEFGHIJKL')).to.throw('Invalid DIGIPIN');
     });
 
     it('should throw error for invalid characters in DigiPin', () => {
-      expect(() => getLatLngFromDigiPin('ABCD-EFG-HIJK')).to.throw('Invalid DIGIPIN');
-      expect(() => getLatLngFromDigiPin('XXXX-XXX-XXXX')).to.throw('Invalid DIGIPIN');
+      expect(() => getLatLngFromDigiPin('ABC-EFG-HIJK')).to.throw('Invalid DIGIPIN');
     });
+
+    it('should not throw error for valid characters in DigiPin', () => {
+      expect(() => getLatLngFromDigiPin('39J-245-C98L')).not.to.throw('Invalid DIGIPIN');
+    });
+
+    it('should not throw error for lowercase characters in DigiPin', () => {
+      expect(() => getLatLngFromDigiPin('39j-245-C98l')).not.to.throw('Invalid DIGIPIN');
+    });
+
+    it('should throw error for empty DigiPin', () => {
+      expect(() => getLatLngFromDigiPin('')).to.throw('Invalid DIGIPIN');
+    });
+  });
+
+  it('should encode latlon to correct DigiPin', () => {
+    const originalLat = 28.6139;
+    const originalLon = 77.209;
+    const digiPin = getDigiPin(originalLat, originalLon);
+    // Check if decoded coordinates are within 0.01 degrees of original
+    expect(digiPin).to.equal('39J-438-TJC7');
+  });
+
+  it('should decode Digipin to correct latlon', () => {
+    const originalLat = 28.6139;
+    const originalLon = 77.209;
+    const originalDigiPin = getDigiPin(originalLat, originalLon);
+    const latlong = getLatLngFromDigiPin(originalDigiPin);
+    // Check if decoded coordinates are within 0.01 degrees of original
+    expect(parseFloat(latlong.latitude)).to.be.closeTo(originalLat, 0.01);
+    expect(parseFloat(latlong.longitude)).to.be.closeTo(originalLon, 0.01);
+  });
+
+  it('should decode partial Digipin to approximate latlon', () => {
+    const originalLat = 28.6139;
+    const originalLon = 77.209;
+    const originalDigiPin = getDigiPin(originalLat, originalLon);
+    const latlong = getLatLngFromDigiPin(originalDigiPin.slice(0, 5));
+    // Check if decoded coordinates are within 0.1 degrees of original
+    expect(parseFloat(latlong.latitude)).to.be.closeTo(originalLat, 0.1);
+    expect(parseFloat(latlong.longitude)).to.be.closeTo(originalLon, 0.1);
   });
 
   describe('Round Trip', () => {

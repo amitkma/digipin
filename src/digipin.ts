@@ -1,7 +1,5 @@
 /**
- * DIGIPIN Encoder and Decoder Library
- * Developed by India Post, Department of Posts
- * Released under an open-source license for public use
+ * Taken from https://github.com/CEPT-VZG/digipin
  */
 
 type LatLngResult = {
@@ -15,6 +13,16 @@ const DIGIPIN_GRID: string[][] = [
   ['K', '4', '5', '6'],
   ['L', 'M', 'P', 'T'],
 ];
+
+const GRID_SIZE = 4;
+const REVERSED_ROW_INDEX = GRID_SIZE - 1;
+
+// Flatten the grid into a Set for fast lookup
+const VALID_DIGIPIN_CHARS = new Set(DIGIPIN_GRID.flat());
+
+function isValidDigiPinString(input: string): boolean {
+  return [...input].every(char => VALID_DIGIPIN_CHARS.has(char));
+}
 
 const BOUNDS = {
   maxLat: 38.5,
@@ -42,21 +50,21 @@ export function getDigiPin(lat: number, lon: number): string {
   let digiPin = '';
 
   for (let level = 1; level <= 10; level++) {
-    const latDiv = (maxLat - minLat) / 4;
-    const lonDiv = (maxLon - minLon) / 4;
+    const latDiv = (maxLat - minLat) / GRID_SIZE;
+    const lonDiv = (maxLon - minLon) / GRID_SIZE;
 
-    let row = 3 - Math.floor((lat - minLat) / latDiv);
+    let row = REVERSED_ROW_INDEX - Math.floor((lat - minLat) / latDiv);
     let col = Math.floor((lon - minLon) / lonDiv);
 
-    row = Math.max(0, Math.min(row, 3));
-    col = Math.max(0, Math.min(col, 3));
+    row = Math.max(0, Math.min(row, GRID_SIZE - 1));
+    col = Math.max(0, Math.min(col, GRID_SIZE - 1));
 
     digiPin += DIGIPIN_GRID[row][col];
 
     if (level === 3 || level === 6) digiPin += '-';
 
-    maxLat = minLat + latDiv * (4 - row);
-    minLat = minLat + latDiv * (3 - row);
+    maxLat = minLat + latDiv * (REVERSED_ROW_INDEX - row + 1);
+    minLat = minLat + latDiv * (REVERSED_ROW_INDEX - row);
 
     minLon = minLon + lonDiv * col;
     maxLon = minLon + lonDiv;
@@ -72,22 +80,24 @@ export function getDigiPin(lat: number, lon: number): string {
  * @throws {Error} If DIGIPIN format is invalid
  */
 export function getLatLngFromDigiPin(digiPin: string): LatLngResult {
-  const pin = digiPin.replace(/-/g, '');
-  if (pin.length !== 10) throw new Error('Invalid DIGIPIN');
+  const pin = digiPin.toUpperCase().replace(/-/g, '');
+  if (pin.length > 10 || pin.length < 1) throw new Error('Invalid DIGIPIN');
+
+  if (!isValidDigiPinString(pin)) throw new Error('Invalid DIGIPIN');
 
   let minLat = BOUNDS.minLat;
   let maxLat = BOUNDS.maxLat;
   let minLon = BOUNDS.minLon;
   let maxLon = BOUNDS.maxLon;
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < pin.length; i++) {
     const char = pin[i];
     let found = false;
     let ri = -1,
       ci = -1;
 
-    for (let r = 0; r < 4; r++) {
-      for (let c = 0; c < 4; c++) {
+    for (let r = 0; r < GRID_SIZE; r++) {
+      for (let c = 0; c < GRID_SIZE; c++) {
         if (DIGIPIN_GRID[r][c] === char) {
           ri = r;
           ci = c;
@@ -100,8 +110,8 @@ export function getLatLngFromDigiPin(digiPin: string): LatLngResult {
 
     if (!found) throw new Error('Invalid character in DIGIPIN');
 
-    const latDiv = (maxLat - minLat) / 4;
-    const lonDiv = (maxLon - minLon) / 4;
+    const latDiv = (maxLat - minLat) / GRID_SIZE;
+    const lonDiv = (maxLon - minLon) / GRID_SIZE;
 
     const lat1 = maxLat - latDiv * (ri + 1);
     const lat2 = maxLat - latDiv * ri;
